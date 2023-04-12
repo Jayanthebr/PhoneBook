@@ -8,14 +8,6 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-
-# @app.route("/phonebooklist.html")
-# def phonebooklist():
-#     with open('details.txt',"r") as f:
-#         phonebooklist=f.readlines()
-    
-#     return render_template("phonebooklist.html",phonelist=phonebooklist)
-
 @app.route("/data", methods=["POST"])
 def data():
     submitform = request.form.get('data')
@@ -57,6 +49,7 @@ def search():
 
 @app.route("/delete",methods=["POST"])
 def delete():
+    flag=1
     delete_name=request.form.get('delete')
     with open("details.txt","r") as phone_list:
         delete=phone_list.readlines()
@@ -66,6 +59,10 @@ def delete():
         for i in delete:
             if delete_name not in i:
                 phone_list.write(i)
-                return("Deleted")
-    
-    return("Not Found")
+            else:
+                flag=0
+    if flag:
+        return("pattern not found")
+    else:
+        return("deleted")
+        
